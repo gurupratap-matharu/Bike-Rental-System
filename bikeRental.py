@@ -1,38 +1,8 @@
-
-"""
-
-A company rents bikes under following options:
-
-1. Rental by hour, charging $5 per hour
-2. Rental by day, charging $20 a day
-3. Rental by week, changing $60 a week
-4. Family Rental, is a promotion that can include from 3 to 5 Rentals (of any type) with a discount of 30% of the total price
-2. Add automated tests to ensure a coverage over 85%
-
-
-5. Add a README.md file to the root of your repository to explain: your design, the development practices you applied and how run the tests.
-
-Note: we don't expect any kind of application, just a set of classes with its automated tests.
-
-# Deliverables:
-The link to your repository
-
-""" 
-
-
-#=======For the Rental shop, layers of abstraction ==> *display available bikes, *rent bikes by hour, day, week, *add bikes, *family rental
-
-#=======For the Customer Class, layers of abstraction: ==> *request a bike* and *return a bike*
-#Note for abstraction: You are only dealing with the important and relevant details of a library...not the irrevelant details like no. of shelves, or the cobwebs on the cielings!
-
-
-import sys
 import datetime
 
 class BikeRental:
     
-
-    def __init__(self,stock=None):
+    def __init__(self,stock=0):
         """
         Our constructor class that instantiates bike rental shop.
         """
@@ -45,7 +15,7 @@ class BikeRental:
         """
 
         print("We have currently {} bikes available to rent.".format(self.stock))
-        
+        return self.stock
 
     def rentBikeOnHourlyBasis(self, n):
         """
@@ -57,7 +27,7 @@ class BikeRental:
         
         elif n > self.stock:
             print("Sorry! We have currently {} bikes available to rent.".format(self.stock))
-            return False
+            return None
         
         else:
             now = datetime.datetime.now()                      
@@ -78,7 +48,7 @@ class BikeRental:
 
         elif n > self.stock:
             print("Sorry! We have currently {} bikes available to rent.".format(self.stock))
-            return False
+            return None
     
         else:
             now = datetime.datetime.now()                      
@@ -99,7 +69,7 @@ class BikeRental:
 
         elif n > self.stock:
             print("Sorry! We have currently {} bikes available to rent.".format(self.stock))
-            return False        
+            return None        
         
         else:
             now = datetime.datetime.now()
@@ -119,7 +89,8 @@ class BikeRental:
         3. Return a bill
         """
         rentalTime, rentalBasis, numOfBikes = request
-        
+        bill = 0
+
         if rentalTime and rentalBasis and numOfBikes:
             self.stock += numOfBikes
             now = datetime.datetime.now()
@@ -127,17 +98,18 @@ class BikeRental:
         
             # hourly bill calculation
             if rentalBasis == 1:
-                bill = round(rentalPeriod.seconds / 3600) * 5
+                bill = round(rentalPeriod.seconds / 3600) * 5 * numOfBikes
                 
             # daily bill calculation
             elif rentalBasis == 2:
-                bill = round(rentalPeriod.days) * 20
+                bill = round(rentalPeriod.days) * 20 * numOfBikes
                 
             # weekly bill calculation
             elif rentalBasis == 3:
-                bill = round(rentalPeriod.days / 7) * 60
-                
-            if (2 <= numOfBikes <= 5):
+                bill = round(rentalPeriod.days / 7) * 60 * numOfBikes
+            
+               
+            if (3 <= numOfBikes <= 5):
                 print("You are eligible for Family rental promotion of 30% discount")
                 bill = bill * 0.7
 
@@ -146,7 +118,7 @@ class BikeRental:
             return bill
         else:
             print("Are you sure you rented a bike with us?")
-
+            return None
 
 
 
